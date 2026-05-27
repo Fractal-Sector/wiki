@@ -1,0 +1,317 @@
+/* ==========================================================================
+   OREHUM SECTOR
+   ========================================================================== */
+
+/* --- СВЕТЛАЯ ТЕМА (ЛАБОРАТОРНЫЙ ИНТЕРФЕЙС) --- */
+:root, :root[data-theme='light'] {
+    --sl-color-bg: #fdfdfd;
+    --sl-color-bg-nav: #f0f0f0;
+    --sl-color-bg-sidebar: #eaeaea;
+    --sl-color-bg-inline-code: #e5e5e5;
+
+    --sl-color-text: #171717;
+    --sl-color-text-muted: #737373;
+    --sl-color-text-accent: #b91c1c;
+
+    --sl-color-border: #d4d4d4;
+    --sl-color-hairline: #e5e5e5;
+
+    --sl-color-accent-low: #fee2e2;
+    --sl-color-accent: #b91c1c;
+    --sl-color-accent-high: #991b1b;
+    --sl-color-bg-accent: #b91c1c;
+
+    --sl-color-gray-1: #171717;
+    --sl-color-gray-2: #262626;
+    --sl-color-gray-3: #737373;
+    --sl-color-gray-4: #a3a3a3;
+    --sl-color-gray-5: #e5e5e5;
+    --sl-color-gray-6: #f5f5f5;
+
+    --pagefind-ui-primary: #b91c1c !important;
+    --pagefind-ui-text: #171717 !important;
+    --pagefind-ui-background: #f5f5f5 !important;
+    --pagefind-ui-border: #d4d4d4 !important;
+
+    --cyber-glow: 0 0 10px rgba(185, 28, 28, 0.3);
+    --grid-color: rgba(185, 28, 28, 0.025);
+}
+
+/* --- ТЕМНАЯ ТЕМА (ЧЕРНЫЙ УГЛЕРОД И ГРАФИТ) --- */
+:root[data-theme='dark'] {
+    --sl-color-bg: #0a0a0a;
+    --sl-color-bg-nav: #141414;
+    --sl-color-bg-sidebar: #0f0f0f;
+    --sl-color-bg-inline-code: #171717;
+
+    --sl-color-text: #f5f5f5;
+    --sl-color-text-muted: #888888;
+    --sl-color-text-accent: #ffffff;
+
+    --sl-color-border: #262626;
+    --sl-color-hairline: #262626;
+
+    --sl-color-accent-low: #450a0a;
+    --sl-color-accent: #b91c1c;
+    --sl-color-accent-high: #f87171;
+
+    --sl-color-gray-1: #f5f5f5;
+    --sl-color-gray-2: #e5e5e5;
+    --sl-color-gray-3: #a3a3a3;
+    --sl-color-gray-4: #525252;
+    --sl-color-gray-5: #262626;
+    --sl-color-gray-6: #171717;
+
+    --pagefind-ui-primary: #b91c1c !important;
+    --pagefind-ui-text: #f5f5f5 !important;
+    --pagefind-ui-background: #141414 !important;
+    --pagefind-ui-border: #262626 !important;
+
+    --cyber-glow: 0 0 10px rgba(185, 28, 28, 0.5);
+    --grid-color: rgba(185, 28, 28, 0.015);
+}
+
+/* --- ГЛОБАЛЬНЫЙ СБРОС СИНЕЙ ФОКУСИРОВКИ --- */
+*:focus-visible {
+    outline: 2px solid var(--sl-color-accent) !important;
+    outline-offset: 1px;
+}
+
+/* --- ШРИФТЫ И СЕТКА --- */
+body {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    letter-spacing: -0.01em;
+}
+
+main {
+    background-image:
+            linear-gradient(var(--grid-color) 1px, transparent 1px),
+            linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 25px 25px;
+}
+
+/* --- КНОПКИ --- */
+button,
+.sl-link-button,
+.action,
+.action.primary,
+.action.secondary {
+    position: relative;
+    font-family: 'JetBrains Mono', monospace !important;
+    text-transform: uppercase;
+    border-radius: 0 !important;
+    font-weight: bold;
+
+    /* Изначальный цвет текста */
+    color: var(--sl-color-text) !important;
+    background-color: transparent !important;
+    border: 1px solid var(--sl-color-border) !important;
+
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Выделение главной кнопки в покое */
+.sl-link-button.primary, .action.primary {
+    border: 1px solid var(--sl-color-accent) !important;
+    border-bottom: 3px solid var(--sl-color-accent) !important;
+    color: var(--sl-color-accent-high) !important;
+}
+:root[data-theme='dark'] .sl-link-button.primary,
+:root[data-theme='dark'] .action.primary {
+    color: var(--sl-color-text-accent) !important;
+}
+
+/* ЖЕСТКИЙ ФИКС ХОВЕРА: Принудительно красим саму кнопку И любой текст/теги внутри неё */
+button:hover,
+.sl-link-button:hover,
+.action:hover,
+button:hover *,
+.sl-link-button:hover *,
+.action:hover * {
+    color: #ffffff !important;
+}
+
+button:hover,
+.sl-link-button:hover,
+.action:hover {
+    background-color: var(--sl-color-accent) !important;
+    border-color: var(--sl-color-accent) !important;
+    box-shadow: var(--cyber-glow) !important;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+    transform: translateY(-1px);
+}
+
+button:hover svg, .sl-link-button:hover svg {
+    fill: #ffffff !important;
+    stroke: #ffffff !important;
+}
+button svg, .sl-link-button svg {
+    fill: currentColor !important;
+    stroke: currentColor !important;
+    transition: all 0.2s ease !important;
+}
+
+/* --- СТАТЬИ И ЗАГОЛОВКИ --- */
+h1, h2, h3 {
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+h1 {
+    text-shadow: var(--cyber-glow);
+    border-bottom: 2px dashed var(--sl-color-accent) !important;
+    padding-bottom: 0.5rem;
+}
+
+h2 {
+    position: relative;
+    padding-left: 12px;
+}
+h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 15%;
+    height: 70%;
+    width: 4px;
+    background: var(--sl-color-accent);
+    box-shadow: var(--cyber-glow);
+}
+
+/* --- САЙДБАР (МЕНЮ) --- */
+.sidebar-content a[aria-current="page"] {
+    background: linear-gradient(90deg, rgba(185, 28, 28, 0.12) 0%, transparent 100%) !important;
+    border-left: 3px solid var(--sl-color-accent) !important;
+    color: var(--sl-color-text-accent) !important;
+    font-weight: bold;
+}
+
+/* --- КАРТОЧКИ И КОНСОЛИ --- */
+.card {
+    background: var(--sl-color-gray-6) !important;
+    border: 1px solid var(--sl-color-border) !important;
+    border-top: 3px solid var(--sl-color-accent) !important;
+    border-radius: 0 !important;
+    transition: all 0.3s ease;
+}
+.card:hover {
+    border-color: var(--sl-color-accent) !important;
+    box-shadow: var(--cyber-glow);
+}
+
+pre {
+    border: 1px solid var(--sl-color-border) !important;
+    background-color: var(--sl-color-bg-sidebar) !important;
+    border-radius: 0 !important;
+}
+
+/* --- АЛЕРТЫ --- */
+.aside {
+    border-radius: 0 !important;
+}
+.aside--note, .aside--tip, .aside--caution, .aside--danger {
+    border-left-color: var(--sl-color-accent) !important;
+    background-color: var(--sl-color-accent-low) !important;
+    color: var(--sl-color-text) !important;
+}
+
+/* --- КОМПАКТНАЯ СЕТКА КАРТОЧЕК --- */
+.compact-grid > * {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+    gap: 0.75rem !important;
+}
+
+.compact-grid .card {
+    padding: 1rem !important;
+}
+
+.compact-grid .card .title {
+    font-size: 1.05rem !important;
+    letter-spacing: 0.02em;
+}
+
+.compact-grid .card .icon {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+}
+
+.compact-grid .card p {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
+    color: var(--sl-color-text-muted) !important;
+}
+
+/* --- СТИЛИЗАЦИЯ СПИСКОВ ВНУТРИ КАРТОЧЕК --- */
+.card ol {
+    padding-left: 1.2rem !important;
+    margin-top: 1rem !important;
+}
+
+.card li {
+    margin-bottom: 1rem !important;
+    color: var(--sl-color-text-muted) !important;
+    line-height: 1.5;
+}
+
+.card ol ::marker {
+    color: var(--sl-color-accent) !important;
+    font-weight: bold;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.card li strong {
+    color: var(--sl-color-text) !important;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+}
+
+/* --- ПРОМЫШЛЕННЫЕ ТАБЛИЦЫ (ЧЕТКАЯ СЕТКА) --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    border: 1px solid var(--sl-color-gray-5) !important;
+}
+
+th {
+    background-color: var(--sl-color-bg-nav) !important;
+    color: var(--sl-color-text-accent) !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.75rem 1rem !important;
+    text-align: left;
+    border-bottom: 2px solid var(--sl-color-accent) !important;
+    border-right: 1px solid var(--sl-color-gray-5) !important;
+}
+
+td {
+    padding: 0.75rem 1rem !important;
+    border: 1px solid var(--sl-color-gray-5) !important;
+    color: var(--sl-color-text) !important;
+    vertical-align: middle;
+}
+
+th:last-child, td:last-child {
+    border-right: none !important;
+}
+
+tr:hover td {
+    background-color: rgba(185, 28, 28, 0.04) !important;
+    color: #ffffff !important;
+    transition: background-color 0.15s ease;
+}
+
+table th:nth-child(1), table td:nth-child(1),
+table th:nth-child(2), table td:nth-child(2) {
+    width: 1% !important;
+    white-space: nowrap;
+}
+
+table th:nth-child(3), table td:nth-child(3) {
+    width: auto !important;
+}
