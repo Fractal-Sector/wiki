@@ -9,6 +9,9 @@ export default defineConfig({
     site: 'https://orehum-project.github.github.io',
     base: '/wiki/',
     trailingSlash: 'always',
+    build: {
+        format: 'directory'
+    },
     integrations: [starlight({
         title: 'Orehum Sector',
         social: [
