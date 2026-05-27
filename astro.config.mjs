@@ -6,6 +6,8 @@ import markdoc from '@astrojs/markdoc';
 
 // https://astro.build/config
 export default defineConfig({
+    site: 'https://orehum-project.github.github.io',
+    base: '/wiki',
     integrations: [starlight({
         title: 'Orehum Sector',
         social: [
