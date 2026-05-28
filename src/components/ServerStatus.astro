@@ -1,0 +1,182 @@
+---
+// src/components/ServerStatus.astro
+---
+
+<div class="status-badges-container">
+  <div class="status-badge">
+    <div class="badge-label">Сервер</div>
+    <div class="badge-value" id="server-status-container" data-status="checking">
+      <span class="status-dot"></span>
+      <span class="status-text" id="status-text">Синхронизация</span>
+    </div>
+  </div>
+
+  <div class="status-badge">
+    <div class="badge-label">Игроки</div>
+    <div class="badge-value status-players" id="players-val">-- / --</div>
+  </div>
+</div>
+
+<script>
+  function initStatusCheck() {
+    async function checkServer() {
+      const container = document.getElementById('server-status-container');
+      const statusText = document.getElementById('status-text');
+      const playersVal = document.getElementById('players-val');
+
+      if (!container || !statusText || !playersVal) return;
+
+      try {
+        const targetUrl = 'https://central.spacestation14.io/hub/api/servers/';
+        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
+
+        const response = await fetch(proxyUrl);
+        if (!response.ok) throw new Error('Ошибка сети');
+
+        // Указываем, что прилетает массив неизвестных объектов
+        const servers = await response.json() as any[];
+        const targetAddress = 'ss14://sector.orehum-project.ru';
+
+        // Явно типизируем параметр 's' как any, чтобы убрать первую ошибку
+        let targetServer = servers.find((s: any) => s.address === targetAddress);
+
+        if (!targetServer) {
+          targetServer = servers.find((s: any) => s.statusData?.name?.toLowerCase().includes('orehum'));
+        }
+
+        if (targetServer && targetServer.statusData) {
+          container.setAttribute('data-status', 'online');
+          statusText.innerText = 'Онлайн';
+
+          const currentPlayers = targetServer.statusData.players ?? 0;
+          const maxPlayers = targetServer.statusData.soft_max_players || 40;
+
+          playersVal.innerText = `${currentPlayers} / ${maxPlayers}`;
+        } else {
+          container.setAttribute('data-status', 'offline');
+          statusText.innerText = 'Офлайн';
+          playersVal.innerText = '-- / --';
+        }
+      } catch (e) {
+        console.error('[Hub API] Ошибка:', e);
+        container.setAttribute('data-status', 'offline');
+        statusText.innerText = 'Офлайн';
+        playersVal.innerText = '-- / --';
+      }
+    }
+
+    checkServer();
+
+    // Кастуем window к any, чтобы TypeScript разрешил кастомное свойство serverStatusInterval
+    const globalWindow = window as any;
+    if (globalWindow.serverStatusInterval) clearInterval(globalWindow.serverStatusInterval);
+    globalWindow.serverStatusInterval = setInterval(checkServer, 30000);
+  }
+
+  initStatusCheck();
+  document.addEventListener('astro:page-load', initStatusCheck);
+</script>
+
+<style>
+  .status-badges-container *,
+  .status-badges-container *::before,
+  .status-badges-container *::after {
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .status-badges-container {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+    margin: 1.5rem 0 !important;
+  }
+
+  .status-badge {
+    display: flex !important;
+    align-items: center !important;
+    font-family: var(--sl-font-code, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace) !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+
+    background: transparent !important;
+    border: 1px solid var(--sl-color-gray-4, #4a5568) !important;
+    border-radius: 4px !important;
+
+    width: 210px !important;
+    min-width: 210px !important;
+    height: 32px !important;
+    overflow: hidden !important;
+  }
+
+  .badge-label {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    color: var(--sl-color-gray-3, #9ca3af) !important;
+    width: 80px !important;
+    min-width: 80px !important;
+    height: 100% !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-right: 1px solid var(--sl-color-gray-4, #4a5568) !important;
+    font-weight: 600 !important;
+  }
+
+  .badge-value {
+    flex: 1 !important;
+    height: 100% !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    font-weight: 700 !important;
+  }
+
+  .status-players {
+    color: var(--sl-color-text-accent, #60a5fa) !important;
+  }
+
+  .status-text {
+    display: inline-block !important;
+    font-size: 0.75rem !important;
+  }
+
+  [data-status="checking"] .status-text {
+    color: var(--sl-color-gray-3, #9ca3af) !important;
+    font-size: 0.65rem !important;
+    letter-spacing: 0 !important;
+  }
+
+  [data-status="online"] .status-text {
+    color: #4ade80 !important;
+  }
+
+  [data-status="offline"] .status-text {
+    color: #f87171 !important;
+  }
+
+  .status-dot {
+    display: none !important;
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 50% !important;
+    flex-shrink: 0 !important;
+  }
+
+  [data-status="online"] .status-dot {
+    display: inline-block !important;
+    background-color: #4ade80 !important;
+    box-shadow: 0 0 8px #4ade80 !important;
+  }
+
+  [data-status="offline"] .status-dot {
+    display: inline-block !important;
+    background-color: #f87171 !important;
+    box-shadow: 0 0 8px #f87171 !important;
+  }
+</style>

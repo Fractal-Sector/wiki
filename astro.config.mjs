@@ -30,13 +30,13 @@ export default defineConfig({
                 label: 'Guides',
                 items: [
                     // Each item here is one entry in the navigation menu.
-                    { label: 'Example Guide', slug: 'guides/example' },
+                    { label: 'Knowledge Base', slug: 'guides/home' },
                 ],
             },
-            {
-                label: 'Reference',
-                items: [{ autogenerate: { directory: 'reference' } }],
-            },
         ],
+        components: {
+            SocialIcons: './src/components/HeaderButtons.astro',
+        },
 		}), markdoc()],
+    
 });

@@ -1,0 +1,40 @@
+---
+// src/components/HeaderButtons.astro
+import type { Props } from '@astrojs/starlight/props';
+import Default from '@astrojs/starlight/components/SocialIcons.astro';
+
+const buttonModules = import.meta.glob('./header-buttons/*.astro', { eager: true });
+const buttons = Object.values(buttonModules) as Array<{ default: (_props: any) => any }>;
+---
+
+<div class="header-buttons-wrapper">
+    {buttons.map((Button) => <Button.default />)}
+
+    {buttons.length > 0 && <span class="header-divider" />}
+
+    <Default {...Astro.props} />
+</div>
+
+<style>
+    /* Здесь остаются только стили контейнера и разделителя */
+    .header-buttons-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .header-divider {
+        width: 1px;
+        height: 16px;
+        background-color: var(--sl-color-gray-4, #4a5568);
+        margin: 0 4px;
+    }
+
+    /* Скрываем всё на мобильных, чтобы не сломать поиск */
+    @media (max-width: 50rem) {
+        .header-buttons-wrapper :global(.header-custom-btn),
+        .header-divider {
+            display: none !important;
+        }
+    }
+</style>

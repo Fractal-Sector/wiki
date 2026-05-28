@@ -1,11 +1,14 @@
 ---
-title: Играть
+title: Подключение
 description: Это страница на моем сайте, работающем на Starlight
 template: splash
 tableOfContents: false
 ---
 
 import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import CenterTitle from '../../components/CenterTitle.astro';
+
+<CenterTitle />
 
 :::caution[Сервер находится в разработке.]
 Хотя наш сайт открыт для посещения, пожалуйста, имейте в виду, что мы все еще находимся в процессе разработки новых функций и улучшений.
@@ -34,7 +37,7 @@ import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 <LinkCard 
     title="Краткое руководство пользователя" 
-    href="/wiki/quick-start"
+    href="/wiki/quick-start/"
     description="Готовы начать? Наше руководство по быстрому старту расскажет обо всем, что необходимо знать перед вашим первым раундом."
 />
 <LinkCard 
