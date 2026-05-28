@@ -33,11 +33,9 @@
         const response = await fetch(proxyUrl);
         if (!response.ok) throw new Error('Ошибка сети');
 
-        // Указываем, что прилетает массив неизвестных объектов
         const servers = await response.json() as any[];
         const targetAddress = 'ss14://sector.orehum-project.ru';
 
-        // Явно типизируем параметр 's' как any, чтобы убрать первую ошибку
         let targetServer = servers.find((s: any) => s.address === targetAddress);
 
         if (!targetServer) {
@@ -67,7 +65,6 @@
 
     checkServer();
 
-    // Кастуем window к any, чтобы TypeScript разрешил кастомное свойство serverStatusInterval
     const globalWindow = window as any;
     if (globalWindow.serverStatusInterval) clearInterval(globalWindow.serverStatusInterval);
     globalWindow.serverStatusInterval = setInterval(checkServer, 30000);

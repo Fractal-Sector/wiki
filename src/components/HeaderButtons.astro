@@ -16,7 +16,6 @@ const buttons = Object.values(buttonModules) as Array<{ default: (_props: any) =
 </div>
 
 <style>
-    /* Здесь остаются только стили контейнера и разделителя */
     .header-buttons-wrapper {
         display: flex;
         align-items: center;
@@ -30,7 +29,6 @@ const buttons = Object.values(buttonModules) as Array<{ default: (_props: any) =
         margin: 0 4px;
     }
 
-    /* Скрываем всё на мобильных, чтобы не сломать поиск */
     @media (max-width: 50rem) {
         .header-buttons-wrapper :global(.header-custom-btn),
         .header-divider {

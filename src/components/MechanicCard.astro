@@ -1,0 +1,59 @@
+---
+// src/components/MechanicCard.astro
+interface Props {
+    title: string;
+    tag: string;
+}
+
+const { title, tag } = Astro.props;
+---
+
+<div class="mechanic-card">
+    <div class="card-header">
+        <h3>{title}</h3>
+        <span class="tag">{tag}</span>
+        
+    </div>
+
+    <div class="description">
+        <slot />
+    </div>
+
+    <div class="media-container">
+        <slot name="media" />
+    </div>
+</div>
+
+<style>
+    .mechanic-card {
+        background: var(--sl-color-gray-6);
+        border: 1px solid var(--sl-color-gray-5);
+        border-radius: 8px;
+        padding: 1.5rem;
+
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .media-container {
+        margin-bottom: 1rem;
+        flex-shrink: 0; /* Не даем картинке сжиматься */
+    }
+
+    .description {
+        flex-grow: 1; /* Описание заберет всё лишнее место, толкая подвал вниз */
+        margin-bottom: 1rem;
+        color: var(--sl-color-gray-2);
+    }
+
+    .tag {
+        background: var(--sl-color-text-accent);
+        color: var(--sl-color-black);
+        font-size: 0.7rem;
+        font-weight: bold;
+        padding: 2px 8px;
+        border-radius: 4px;
+        text-transform: uppercase;
+    }
+</style>
