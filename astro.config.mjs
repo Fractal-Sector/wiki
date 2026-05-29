@@ -14,6 +14,8 @@ export default defineConfig({
     },
     integrations: [starlight({
         title: 'Orehum Sector',
+        tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 2 },
+        defaultLocale: 'ru',
         social: [
             { icon: 'github', label: 'GitHub', href: 'https://github.com/Orehum-Project/Orehum-Sector' },
             { icon: 'discord', label: 'Discord', href: 'https://discord.gg/ZC94VrbFNY' },
@@ -26,13 +28,7 @@ export default defineConfig({
             './src/styles/custom.css',
         ],
         sidebar: [
-            {
-                label: 'Guides',
-                items: [
-                    // Each item here is one entry in the navigation menu.
-                    { label: 'Knowledge Base', slug: 'guides/home' },
-                ],
-            },
+            { label: 'Правила сервера', slug: 'rules/rules' },
         ],
         components: {
             SocialIcons: './src/components/HeaderButtons.astro',
