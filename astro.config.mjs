@@ -29,6 +29,14 @@ export default defineConfig({
         ],
         sidebar: [
             { label: 'Правила сервера', slug: 'rules/rules' },
+            {
+                label: 'Прочее',
+                items: [
+                    { label: 'Часто задаваемые вопросы', slug: 'resources/ask' },
+                    { label: 'Проблемы с пингом', slug: 'resources/lag' },
+                    { label: 'Программа общественного радио', slug: 'resources/radio' },
+                ],
+            }
         ],
         components: {
             SocialIcons: './src/components/HeaderButtons.astro',
