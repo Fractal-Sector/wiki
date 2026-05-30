@@ -315,3 +315,8 @@ table th:nth-child(2), table td:nth-child(2) {
 table th:nth-child(3), table td:nth-child(3) {
     width: auto !important;
 }
+
+.crime-cell[data-active="true"] {
+    outline: 2px solid #ff9b4d;
+    background-color: rgba(255, 155, 77, 0.18);
+}
