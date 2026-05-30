@@ -1,0 +1,75 @@
+---
+title: Контрибьютерство
+description: Это страница на моем сайте, работающем на Starlight
+template: splash
+tableOfContents: false
+---
+
+import CenterTitle from '../../components/CenterTitle.astro';
+import ContributorsTable from '../../components/ContributorsTable.astro';
+
+<CenterTitle />
+
+## Open Source
+Orehum Sector — это проект с открытым исходным кодом, созданный на базе Space Station 14. Мы верим в силу разработки, основанной на участии сообщества, и приветствуем вклад разработчиков всех уровней квалификации.
+
+Наш исходный код находится в открытом доступе на GitHub, и любой желающий может внести свои улучшения, исправить ошибки или добавить новые функции в проект.
+
+<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+    <a
+        href="https://github.com/Orehum-Project/Orehum-Sector"
+        style={{
+            display: 'inline-block',
+            padding: '12px 24px',
+            backgroundColor: '#b91c1c',
+            color: '#ffffff',
+            textDecoration: 'none',
+            borderRadius: '8px',
+            fontWeight: 'bold',
+            fontSize: '16px',
+            transition: 'background-color 0.3s ease, transform 0.2s ease',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+        }}
+        onMouseOver={(e) => {
+            e.target.style.backgroundColor = '#005bb5';
+            e.target.style.transform = 'translateY(-2px)';
+        }}
+        onMouseOut={(e) => {
+            e.target.style.backgroundColor = '#0070f3';
+            e.target.style.transform = 'translateY(0)';
+        }}
+    >
+        Проект Github
+    </a>
+</div>
+
+---
+
+## Как внести свой вклад
+
+### Разовые улучшения
+Каждый может помочь в развитии проекта! Если вы нашли баг или у вас есть идея по улучшению, вы можете:
+- Сделать форк репозитория на GitHub.
+- Внести изменения в новую ветку.
+- Создать Pull Request с четким и понятным описанием ваших правок.
+- Наши майнтейнеры рассмотрят и добавят ваш код в проект.
+
+### Вступление в команду разработки
+Если вам интересен структурированный подход и постоянная работа в нашей команде, мы будем рады вас видеть! Участники команды получают доступ к:
+- Каналам координации и закрытым обсуждениям разработки.
+- Прямому сотрудничеству с другими разработчиками.
+- Возможности влиять на вектор развития и приоритеты проекта.
+- Регулярным сессиям планирования.
+Чтобы присоединиться к команде, свяжитесь с нами в нашем Discord-сервере и сообщите, что хотите помогать проекту на регулярной основе!
+
+### С чего начать?
+Впервые сталкиваетесь с разработкой для Space Station 14? Ознакомьтесь со следующими ресурсами:
+- [Документация SS14](https://docs.spacestation14.io/)
+- [README проекта](https://github.com/Orehum-Project/Orehum-Sector/blob/new/README.md)
+
+---
+
+## Контрибьютеры
+Спасибо всем замечательным людям, которые внесли свой вклад в Orehum Sector!
+
+<ContributorsTable />

@@ -1,0 +1,21 @@
+name: Update Contributors
+on:
+  schedule:
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions: { contents: write }
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install @octokit/rest
+      - run: node scripts/fetch-contributors.js
+      - name: Commit & Push
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git add src/data/contributors.json
+          git commit -m "Update contributors list" || exit 0
+          git push
