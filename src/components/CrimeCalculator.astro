@@ -1,439 +1,358 @@
 ---
 // CrimeCalculator.astro
+// src/components/CrimeCalculator.astro
 ---
 
-<div class="crime-calc" id="crime-calc">
+<div id="cc">
 
+    <!-- TABLE -->
     <div class="cc-table-wrap">
         <table class="cc-table">
-            <thead>
-            <tr>
+            <thead><tr>
                 <th class="cc-th-cat">Категория</th>
-                <th class="cc-th cc-tier-1">
-                    <span class="cc-tier-badge t1">1-XX</span>
-                    <span class="cc-tier-name">Незначительное</span>
-                    <span class="cc-tier-info">2–5 мин · 1 000 k</span>
-                </th>
-                <th class="cc-th cc-tier-2">
-                    <span class="cc-tier-badge t2">2-XX</span>
-                    <span class="cc-tier-name">Среднее</span>
-                    <span class="cc-tier-info">5–15 мин · 2 500 k</span>
-                </th>
-                <th class="cc-th cc-tier-3">
-                    <span class="cc-tier-badge t3">3-XX</span>
-                    <span class="cc-tier-name">Серьёзное</span>
-                    <span class="cc-tier-info">15–20 мин · 7 500 k</span>
-                </th>
-                <th class="cc-th cc-tier-4">
-                    <span class="cc-tier-badge t4">4-XX</span>
-                    <span class="cc-tier-name">Исключительное</span>
-                    <span class="cc-tier-info">20–25 мин · 15 000 k</span>
-                </th>
-                <th class="cc-th cc-tier-5">
-                    <span class="cc-tier-badge t5">5-XX</span>
-                    <span class="cc-tier-name">Капитальное</span>
-                    <span class="cc-tier-info">25–35 мин · 25 000 k</span>
-                </th>
-            </tr>
-            </thead>
-            <tbody id="cc-tbody">
-            </tbody>
+                <th class="cc-th"><b class="t1">1-XX</b><br>Незначительное<br><small>2–5 мин · 1 000 K</small></th>
+                <th class="cc-th"><b class="t2">2-XX</b><br>Среднее<br><small>5–15 мин · 2 500 K</small></th>
+                <th class="cc-th"><b class="t3">3-XX</b><br>Серьёзное<br><small>15–20 мин · 7 500 K</small></th>
+                <th class="cc-th"><b class="t4">4-XX</b><br>Исключительное<br><small>20–25 мин · 15 000 K</small></th>
+                <th class="cc-th"><b class="t5">5-XX</b><br>Капитальное<br><small>25–35 мин · 25 000 K</small></th>
+            </tr></thead>
+            <tbody id="cc-tbody"></tbody>
         </table>
     </div>
 
-    <div class="cc-section-label">
-        <span class="cc-label-icon">Модификаторы ситуации</span>
+    <!-- MODIFIERS -->
+    <div class="cc-label">Модификаторы ситуации</div>
+    <div id="cc-mods"></div>
+
+    <!-- SENTENCER -->
+    <div class="cc-label">
+        Расчёт приговора
+        <button id="cc-clear">Очистить</button>
     </div>
 
-    <div class="cc-modifiers" id="cc-modifiers"></div>
-    <p class="cc-mod-hint">Нажми на модификатор чтобы включить. Плоские добавки применяются <em>до</em> процентных.</p>
-
-    <div class="cc-section-label">
-        <span class="cc-label-icon">Расчёт приговора</span> 
-        <button class="cc-clear-btn" id="cc-clear">Очистить</button>
-    </div>
-
-    <div class="cc-sentencer" id="cc-sentencer">
-        <div class="cc-sent-empty" id="cc-sent-empty">Выбери преступления из таблицы выше</div>
-        <div id="cc-sent-content" style="display:none">
-            <div class="cc-sent-chips" id="cc-sent-chips"></div>
-            <div class="cc-sent-rows">
-                <div class="cc-sent-row">
-                    <span class="cc-sent-label">База (до стекинга)</span>
-                    <span class="cc-sent-val" id="val-base-time">—</span>
-                    <span class="cc-sent-val cc-fine" id="val-base-fine">—</span>
+    <div id="cc-sentence">
+        <div id="cc-empty">Выбери преступления из таблицы выше</div>
+        <div id="cc-result" style="display:none">
+            <div id="cc-chips"></div>
+            <div id="cc-breakdown"></div>
+            <div id="cc-totals">
+                <div class="cc-total-row">
+                    <span class="cc-total-label">Срок</span>
+                    <span class="cc-total-val t-time" id="out-time">—</span>
                 </div>
-                <div class="cc-sent-row cc-sent-dim">
-                    <span class="cc-sent-label">Стекинг категорий <small>(×100%, ×50%, ×25%…)</small></span>
-                    <span class="cc-sent-val" id="val-stack-time">—</span>
-                    <span class="cc-sent-val cc-fine" id="val-stack-fine">—</span>
-                </div>
-                <div class="cc-sent-row cc-sent-mods" id="row-mods" style="display:none">
-                    <span class="cc-sent-label">Активные модификаторы</span>
-                    <span class="cc-sent-val" id="val-mods">—</span>
-                    <span class="cc-sent-val cc-fine"></span>
-                </div>
-                <div class="cc-sent-divider"></div>
-                <div class="cc-sent-row cc-sent-final">
-                    <span class="cc-sent-label">Итого</span>
-                    <span class="cc-sent-val cc-final-time" id="val-final-time">—</span>
-                    <span class="cc-sent-val cc-final-fine" id="val-final-fine">—</span>
+                <div class="cc-total-row">
+                    <span class="cc-total-label">Штраф</span>
+                    <span class="cc-total-val t-fine" id="out-fine">—</span>
                 </div>
             </div>
             <div class="cc-copy-row">
-                <button class="cc-copy-btn" id="cc-copy">Скопировать разметку</button>
-                <span class="cc-copy-toast" id="cc-copy-toast">Скопировано!</span>
+                <button id="cc-copy">Скопировать</button>
+                <span id="cc-toast">Скопировано!</span>
             </div>
         </div>
     </div>
 
-    <details class="cc-rules">
-        <summary>Правила стекинга и альтернативы</summary>
-        <div class="cc-rules-body">
-            <h4>Стекинг</h4>
-            <p>Преступления организованы по категориям (…-XX). В пределах одной категории применяется только наивысшее по тяжести. Несколько эпизодов одного преступления считаются одним, но допускают добавление Терроризма.</p>
-            <p>При зарядах из нескольких категорий: самая тяжёлая идёт полностью, каждая следующая — ×50% от предыдущей (100% + 50% + 25%…).</p>
-            <h4>Альтернативы</h4>
-            <p>Осуждённый может запросить штраф вместо тюрьмы. Офицер может простить штраф/тюрьму и выбрать принудительные работы (с согласия заключённого). Попытка побега во время работ приравнивается к побегу из тюрьмы.</p>
+    <!-- RULES -->
+    <details class="cc-details">
+        <summary>Правила стекинга</summary>
+        <div class="cc-details-body">
+            <p>В пределах одной категории (-XX) засчитывается только самое тяжёлое преступление.<br>
+                При нескольких категориях: первая ×100%, вторая ×50%, третья ×25% и т.д.</p>
+            <p>Осуждённый может запросить штраф вместо тюрьмы. Офицер вправе назначить принудительные работы с согласия заключённого.</p>
         </div>
     </details>
 
-    <details class="cc-defs">
-        <summary>Все определения преступлений</summary>
-        <div class="cc-defs-grid" id="cc-defs-grid"></div>
+    <!-- DEFS -->
+    <details class="cc-details">
+        <summary>Все определения</summary>
+        <div id="cc-defs"></div>
     </details>
 
 </div>
 
 <style>
-    .crime-calc {
-        --cc-bg: var(--sl-color-bg);
-        --cc-surface: var(--sl-color-bg-nav, #1a1d23);
-        --cc-border: var(--sl-color-hairline, rgba(255,255,255,0.1));
-        --cc-text: var(--sl-color-text, #e2e8f0);
-        --cc-text-dim: var(--sl-color-text-accent, #94a3b8);
-        --cc-accent: var(--sl-color-accent, #7c3aed);
-        --cc-accent-hi: var(--sl-color-accent-high, #a78bfa);
-        --t1: #4ade80;
-        --t2: #facc15;
-        --t3: #fb923c;
-        --t4: #f87171;
-        --t5: #e879f9;
+    #cc {
+        --bg:  var(--sl-color-bg-nav, #13151a);
+        --brd: var(--sl-color-hairline, rgba(255,255,255,.1));
+        --txt: var(--sl-color-text, #e2e8f0);
+        --dim: var(--sl-color-text-accent, #94a3b8);
+        --acc: var(--sl-color-accent, #7c3aed);
+        --ach: var(--sl-color-accent-high, #a78bfa);
+        --t1: #4ade80; --t2: #facc15; --t3: #fb923c; --t4: #f87171; --t5: #e879f9;
         font-family: var(--sl-font, system-ui, sans-serif);
-        max-width: 100%;
+        font-size: .85rem;
+        color: var(--txt);
     }
-    .cc-header {
-        display: flex; align-items: center; gap: 1rem;
-        margin-bottom: 1.75rem; padding: 1.25rem 1.5rem;
-        background: var(--cc-surface); border: 1px solid var(--cc-border);
-        border-radius: 10px; border-left: 4px solid var(--cc-accent);
-    }
-    .cc-header-icon { font-size: 2rem; line-height: 1; }
-    .cc-title { margin: 0 0 .2rem; font-size: 1.4rem; font-weight: 700; color: var(--cc-text); }
-    .cc-subtitle { margin: 0; font-size: .85rem; color: var(--cc-text-dim); }
-    .cc-section-label {
-        display: flex; align-items: center; gap: .5rem;
-        font-size: .8rem; font-weight: 700; letter-spacing: .08em;
-        text-transform: uppercase; color: var(--cc-text-dim);
-        margin: 1.75rem 0 .75rem;
-    }
-    .cc-section-label .cc-label-icon { font-size: 1rem; }
-    .cc-clear-btn {
-        margin-left: auto; padding: .25rem .75rem; font-size: .75rem;
-        background: transparent; border: 1px solid var(--cc-border);
-        border-radius: 6px; color: var(--cc-text-dim); cursor: pointer; transition: all .15s;
-    }
-    .cc-clear-btn:hover { border-color: var(--t4); color: var(--t4); }
-    .cc-table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--cc-border); }
-    .cc-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
-    .cc-table thead tr { background: var(--cc-surface); }
-    .cc-th-cat, .cc-th {
-        padding: .6rem .5rem; text-align: left;
-        border-bottom: 1px solid var(--cc-border);
-    }
-    .cc-th { text-align: center; min-width: 100px; }
-    .cc-th-cat { width: 90px; min-width: 0; color: var(--cc-text-dim); font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
-    .cc-tier-badge { display: block; font-size: .7rem; font-weight: 800; letter-spacing: .05em; margin-bottom: .15rem; }
-    .t1 { color: var(--t1); } .t2 { color: var(--t2); } .t3 { color: var(--t3); } .t4 { color: var(--t4); } .t5 { color: var(--t5); }
-    .cc-tier-name { display: block; font-size: .75rem; font-weight: 600; color: var(--cc-text); white-space: normal; word-break: break-word; }
-    .cc-tier-info { display: block; font-size: .65rem; color: var(--cc-text-dim); white-space: nowrap; }
-    .cc-table tbody tr { transition: background .1s; }
-    .cc-table tbody tr:hover { background: rgba(255,255,255,.03); }
-    .cc-table tbody tr:not(:last-child) td { border-bottom: 1px solid var(--cc-border); }
-    .cc-td-cat { padding: .5rem .6rem; color: var(--cc-text-dim); font-size: .75rem; font-weight: 600; width: 90px; min-width: 0; }
-    .cc-cat-name { font-size: .75rem; font-weight: 600; line-height: 1.3; }
-    .cc-cat-code { font-size: .63rem; opacity: .55; }
-    .cc-cell { padding: .25rem .35rem; text-align: center; }
-    .cc-cell { padding: 0; text-align: center; }
-    .cc-cell-empty { padding: .5rem; text-align: center; color: var(--cc-border); }
-    .cc-crime-cell {
-        padding: .45rem .5rem;
-        cursor: pointer;
+
+    /* TABLE */
+    .cc-table-wrap { overflow-x: auto; border: 1px solid var(--brd); border-radius: 8px; }
+    .cc-table { width: 100%; border-collapse: collapse; }
+    .cc-table thead tr { background: var(--bg); }
+    .cc-th-cat, .cc-th { padding: .5rem .4rem; border-bottom: 1px solid var(--brd); }
+    .cc-th { text-align: center; font-size: .72rem; font-weight: 600; line-height: 1.5; }
+    .cc-th-cat { width: 86px; font-size: .68rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--dim); }
+    .cc-th b { font-size: .72rem; font-weight: 800; }
+    .cc-th small { font-size: .6rem; color: var(--dim); font-weight: 400; }
+    .t1{color:var(--t1)} .t2{color:var(--t2)} .t3{color:var(--t3)} .t4{color:var(--t4)} .t5{color:var(--t5)}
+
+    /* ROWS */
+    .cc-table tbody tr:not(:last-child) { border-bottom: 1px solid var(--brd); }
+    .cc-td-cat { padding: .4rem .5rem; color: var(--dim); font-size: .7rem; font-weight: 600; }
+    .cc-td-cat small { display: block; font-size: .6rem; opacity: .5; }
+
+    /* CRIME CELLS — these are the <td> elements themselves */
+    td.crime-cell {
+        padding: .4rem .35rem;
         text-align: center;
-        vertical-align: middle;
-        transition: background .12s;
-    }
-    .cc-crime-cell:hover { background: rgba(255,255,255,.07); }
-    .cc-crime-cell.selected { background: rgba(255,255,255,.1); }
-    .cc-crime-cell[data-tier="1"] .cb-code { color: var(--t1); }
-    .cc-crime-cell[data-tier="2"] .cb-code { color: var(--t2); }
-    .cc-crime-cell[data-tier="3"] .cb-code { color: var(--t3); }
-    .cc-crime-cell[data-tier="4"] .cb-code { color: var(--t4); }
-    .cc-crime-cell[data-tier="5"] .cb-code { color: var(--t5); }
-    .cc-crime-cell[data-tier="1"].selected { background: rgba(74,222,128,.13); box-shadow: inset 0 0 0 2px var(--t1); }
-    .cc-crime-cell[data-tier="2"].selected { background: rgba(250,204,21,.13); box-shadow: inset 0 0 0 2px var(--t2); }
-    .cc-crime-cell[data-tier="3"].selected { background: rgba(251,146,60,.13); box-shadow: inset 0 0 0 2px var(--t3); }
-    .cc-crime-cell[data-tier="4"].selected { background: rgba(248,113,113,.13); box-shadow: inset 0 0 0 2px var(--t4); }
-    .cc-crime-cell[data-tier="5"].selected { background: rgba(232,121,249,.13); box-shadow: inset 0 0 0 2px var(--t5); }
-    .cc-crime-cell[data-tier="1"].selected .cb-name { color: var(--t1); }
-    .cc-crime-cell[data-tier="2"].selected .cb-name { color: var(--t2); }
-    .cc-crime-cell[data-tier="3"].selected .cb-name { color: var(--t3); }
-    .cc-crime-cell[data-tier="4"].selected .cb-name { color: var(--t4); }
-    .cc-crime-cell[data-tier="5"].selected .cb-name { color: var(--t5); }
-    .cb-code { font-size: .68rem; font-weight: 800; letter-spacing: .04em; display: block; }
-    .cb-name { font-size: .75rem; line-height: 1.25; display: block; color: var(--cc-text); word-break: break-word; transition: color .12s; }
-    .cc-cell-empty { color: var(--cc-border); font-size: .9rem; }
-    .cc-modifiers { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: .4rem; margin-bottom: .5rem; }
-    .cc-mod-btn {
-        display: flex; align-items: center; gap: .5rem; padding: .45rem .65rem;
-        background: var(--cc-surface); border: 1px solid var(--cc-border);
-        border-radius: 7px; cursor: pointer; text-align: left; transition: all .15s; color: var(--cc-text);
-    }
-    .cc-mod-btn:hover { border-color: var(--cc-accent); }
-    .cc-mod-btn.active { border-color: var(--cc-accent-hi); background: rgba(124,58,237,.12); }
-    .cc-mod-btn.active.negative { border-color: var(--t1); background: rgba(74,222,128,.08); }
-    .cc-mod-icon { font-size: .95rem; flex-shrink: 0; }
-    .cc-mod-info { flex: 1; display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; }
-    .cc-mod-name { font-size: .75rem; font-weight: 700; }
-    .cc-mod-delta { display: inline-block; font-size: .7rem; font-weight: 800; padding: .08rem .3rem; border-radius: 4px; }
-    .cc-mod-delta.pos { background: rgba(248,113,113,.15); color: var(--t4); }
-    .cc-mod-delta.neg { background: rgba(74,222,128,.15); color: var(--t1); }
-    .cc-mod-desc { display: none; }
-    .cc-mod-hint { font-size: .73rem; color: var(--cc-text-dim); margin: 0 0 1.5rem; font-style: italic; }
-    .cc-sentencer { background: var(--cc-surface); border: 1px solid var(--cc-border); border-radius: 10px; padding: 1.25rem 1.5rem; }
-    .cc-sent-empty { text-align: center; color: var(--cc-text-dim); padding: 2rem 0; font-size: .9rem; }
-    .cc-sent-chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
-    .cc-chip {
-        display: inline-flex; align-items: center; gap: .3rem; padding: .25rem .6rem;
-        border-radius: 99px; font-size: .72rem; font-weight: 600;
-        border: 1px solid var(--cc-border); background: rgba(255,255,255,.05);
-        cursor: pointer; transition: all .12s;
-    }
-    .cc-chip:hover { opacity: .7; text-decoration: line-through; }
-    .cc-chip[data-tier="1"] { border-color: var(--t1); color: var(--t1); }
-    .cc-chip[data-tier="2"] { border-color: var(--t2); color: var(--t2); }
-    .cc-chip[data-tier="3"] { border-color: var(--t3); color: var(--t3); }
-    .cc-chip[data-tier="4"] { border-color: var(--t4); color: var(--t4); }
-    .cc-chip[data-tier="5"] { border-color: var(--t5); color: var(--t5); }
-    .cc-sent-rows { display: flex; flex-direction: column; gap: .4rem; }
-    .cc-sent-row { display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: center; padding: .4rem .5rem; border-radius: 6px; font-size: .82rem; }
-    .cc-sent-dim { opacity: .7; }
-    .cc-sent-label { color: var(--cc-text-dim); }
-    .cc-sent-val { font-weight: 600; text-align: right; min-width: 80px; color: var(--cc-text); }
-    .cc-fine { color: var(--cc-text-dim) !important; font-size: .78rem !important; }
-    .cc-sent-divider { height: 1px; background: var(--cc-border); margin: .25rem 0; }
-    .cc-sent-final { background: rgba(255,255,255,.04); border-radius: 7px; padding: .6rem .75rem !important; }
-    .cc-final-time { font-size: 1rem !important; font-weight: 800 !important; color: var(--cc-accent-hi) !important; }
-    .cc-final-fine { font-size: .85rem !important; font-weight: 700 !important; color: var(--cc-text-dim) !important; }
-    .cc-copy-row { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; }
-    .cc-copy-btn { padding: .4rem 1rem; background: var(--cc-accent); color: white; border: none; border-radius: 7px; font-size: .8rem; font-weight: 600; cursor: pointer; transition: opacity .15s; }
-    .cc-copy-btn:hover { opacity: .85; }
-    .cc-copy-toast { font-size: .78rem; color: var(--t1); opacity: 0; transition: opacity .2s; }
-    .cc-copy-toast.show { opacity: 1; }
-    .cc-rules, .cc-defs { margin-top: 1.25rem; background: var(--cc-surface); border: 1px solid var(--cc-border); border-radius: 9px; overflow: hidden; }
-    .cc-rules summary, .cc-defs summary { padding: .75rem 1rem; cursor: pointer; font-size: .83rem; font-weight: 600; color: var(--cc-text); list-style: none; user-select: none; }
-    .cc-rules summary:hover, .cc-defs summary:hover { background: rgba(255,255,255,.03); }
-    .cc-rules-body { padding: 0 1.25rem 1.25rem; font-size: .82rem; color: var(--cc-text); line-height: 1.6; }
-    .cc-rules-body h4 { margin: .75rem 0 .25rem; font-size: .85rem; color: var(--cc-accent-hi); }
-    .cc-rules-body p { margin: 0 0 .5rem; }
-    .cc-defs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: .75rem; padding: .75rem 1rem 1.25rem; }
-    .cc-def-card { background: rgba(255,255,255,.03); border: 1px solid var(--cc-border); border-radius: 8px; padding: .65rem .85rem; }
-    .cc-def-code { font-size: .65rem; font-weight: 800; letter-spacing: .06em; margin-bottom: .2rem; }
-    .cc-def-name { font-size: .8rem; font-weight: 700; margin-bottom: .3rem; color: var(--cc-text); }
-    .cc-def-text { font-size: .72rem; color: var(--cc-text-dim); line-height: 1.45; margin: 0; }
-    .cc-cell.selected { background-color: var(--sl-color-accent-high); border-color: #fff; outline: 2px solid #fff; }
-    .cc-mod-group { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem;}
-
-    .cc-mod-item {
         cursor: pointer;
-        padding: 0.5rem;
-        background: var(--sl-color-gray-6);
-        border-radius: 4px;
+        transition: background .1s;
+        user-select: none;
     }
+    td.crime-cell:hover { background: rgba(255,255,255,.07); }
 
-    .cc-mod-title {
-        font-weight: bold;
-        display: block;
-    }
+    td.crime-cell[data-active="true"][data-color="1"] { background: rgba(74,222,128,.18);  outline: 2px solid var(--t1) inset; }
+    td.crime-cell[data-active="true"][data-color="2"] { background: rgba(250,204,21,.18);  outline: 2px solid var(--t2) inset; }
+    td.crime-cell[data-active="true"][data-color="3"] { background: rgba(251,146,60,.18);  outline: 2px solid var(--t3) inset; }
+    td.crime-cell[data-active="true"][data-color="4"] { background: rgba(248,113,113,.18); outline: 2px solid var(--t4) inset; }
+    td.crime-cell[data-active="true"][data-color="5"] { background: rgba(232,121,249,.18); outline: 2px solid var(--t5) inset; }
 
-    .cc-mod-desc {
-        font-size: 0.8rem;
-        color: var(--sl-color-gray-3);
-    }
+    td.crime-cell[data-active="true"] .c-name { color: inherit; }
+    td.crime-cell[data-color="1"] .c-code { color: var(--t1); }
+    td.crime-cell[data-color="2"] .c-code { color: var(--t2); }
+    td.crime-cell[data-color="3"] .c-code { color: var(--t3); }
+    td.crime-cell[data-color="4"] .c-code { color: var(--t4); }
+    td.crime-cell[data-color="5"] .c-code { color: var(--t5); }
+    td.crime-cell[data-active="true"][data-color="1"] .c-name { color: var(--t1); }
+    td.crime-cell[data-active="true"][data-color="2"] .c-name { color: var(--t2); }
+    td.crime-cell[data-active="true"][data-color="3"] .c-name { color: var(--t3); }
+    td.crime-cell[data-active="true"][data-color="4"] .c-name { color: var(--t4); }
+    td.crime-cell[data-active="true"][data-color="5"] .c-name { color: var(--t5); }
 
-    .cc-mod-item.active {
-        background: var(--sl-color-accent-low);
+    .c-code { display: block; font-size: .65rem; font-weight: 800; letter-spacing: .04em; }
+    .c-name { display: block; font-size: .72rem; line-height: 1.25; word-break: break-word; color: var(--txt); }
+    .c-empty { display: block; color: var(--brd); font-size: .85rem; padding: .4rem 0; }
+
+    /* SECTION LABEL */
+    .cc-label {
+        display: flex; align-items: center; gap: .5rem;
+        font-size: .72rem; font-weight: 700; letter-spacing: .07em;
+        text-transform: uppercase; color: var(--dim);
+        margin: 1.4rem 0 .55rem;
     }
+    .cc-label button {
+        margin-left: auto; padding: .2rem .6rem; font-size: .7rem;
+        background: transparent; border: 1px solid var(--brd);
+        border-radius: 5px; color: var(--dim); cursor: pointer;
+    }
+    .cc-label button:hover { border-color: var(--t4); color: var(--t4); }
+
+    /* MODIFIERS */
+    #cc-mods { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: .4rem; margin-bottom: .6rem; }
+
+    .mod-pill {
+        display: flex; align-items: flex-start; gap: .5rem;
+        padding: .55rem .7rem;
+        background: var(--bg); border: 1px solid var(--brd); border-radius: 7px;
+        cursor: pointer; text-align: left; color: var(--txt);
+        transition: border-color .12s, background .12s;
+    }
+    .mod-pill:hover { border-color: var(--acc); }
+
+    /* punish = red tint when active, beneficial = green tint */
+    .mod-pill.punish[data-active="true"]     { background: rgba(248,113,113,.12); border-color: var(--t4); }
+    .mod-pill.beneficial[data-active="true"] { background: rgba(74,222,128,.10);  border-color: var(--t1); }
+
+    .mod-icon { font-size: 1rem; flex-shrink: 0; margin-top: .1rem; }
+    .mod-body { flex: 1; min-width: 0; }
+    .mod-head { display: flex; align-items: center; gap: .35rem; flex-wrap: wrap; margin-bottom: .2rem; }
+    .mod-name { font-size: .76rem; font-weight: 700; }
+    .mod-badge { font-size: .67rem; font-weight: 800; padding: .07rem .28rem; border-radius: 3px; white-space: nowrap; }
+    .mod-badge.pos { background: rgba(248,113,113,.18); color: var(--t4); }
+    .mod-badge.neg { background: rgba(74,222,128,.18);  color: var(--t1); }
+    .mod-desc { font-size: .62rem; font-weight: 400; color: var(--dim); line-height: 1.3; }
+
+    /* SENTENCE BOX */
+    #cc-sentence { background: var(--bg); border: 1px solid var(--brd); border-radius: 8px; padding: 1rem 1.1rem; }
+    #cc-empty { text-align: center; color: var(--dim); padding: 1.5rem 0; }
+
+    /* chips */
+    #cc-chips { display: flex; flex-wrap: wrap; gap: .3rem; margin-bottom: .9rem; }
+    .chip {
+        display: inline-flex; align-items: center; padding: .18rem .5rem;
+        border-radius: 99px; font-size: .68rem; font-weight: 600;
+        border: 1px solid var(--brd); background: rgba(255,255,255,.04);
+        cursor: pointer;
+    }
+    .chip:hover { opacity: .6; text-decoration: line-through; }
+    .chip[data-t="1"]{border-color:var(--t1);color:var(--t1)}
+    .chip[data-t="2"]{border-color:var(--t2);color:var(--t2)}
+    .chip[data-t="3"]{border-color:var(--t3);color:var(--t3)}
+    .chip[data-t="4"]{border-color:var(--t4);color:var(--t4)}
+    .chip[data-t="5"]{border-color:var(--t5);color:var(--t5)}
+
+    /* breakdown */
+    #cc-breakdown { margin-bottom: .8rem; }
+    .bd-title { font-size: .65rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--dim); margin-bottom: .35rem; }
+    .bd-row {
+        display: grid; grid-template-columns: auto 1fr auto auto;
+        gap: .4rem; align-items: center;
+        padding: .28rem .4rem; border-radius: 5px; font-size: .78rem;
+    }
+    .bd-row:nth-child(even) { background: rgba(255,255,255,.025); }
+    .bd-badge { font-size: .62rem; font-weight: 800; padding: .08rem .28rem; border-radius: 3px; white-space: nowrap; }
+    .bd-name  { color: var(--txt); }
+    .bd-mult  { font-size: .65rem; color: var(--dim); white-space: nowrap; }
+    .bd-val   { font-weight: 700; text-align: right; white-space: nowrap; }
+    .bd-sep   { height: 1px; background: var(--brd); margin: .3rem 0; }
+    .bd-sum   { display: flex; justify-content: flex-end; gap: .8rem; font-size: .72rem; color: var(--dim); padding: .2rem .4rem; }
+
+    .mod-bd-row {
+        display: flex; align-items: center; gap: .5rem;
+        padding: .22rem .4rem; font-size: .76rem;
+    }
+    .mod-bd-name { flex: 1; color: var(--txt); }
+    .mod-bd-val  { font-weight: 700; white-space: nowrap; }
+    .mod-bd-val.pos { color: var(--t4); }
+    .mod-bd-val.neg { color: var(--t1); }
+
+    /* totals */
+    #cc-totals { display: flex; gap: 1.5rem; flex-wrap: wrap; background: rgba(255,255,255,.04); border-radius: 7px; padding: .7rem 1rem; margin-bottom: .8rem; }
+    .cc-total-row { display: flex; flex-direction: column; gap: .1rem; }
+    .cc-total-label { font-size: .65rem; text-transform: uppercase; letter-spacing: .05em; color: var(--dim); }
+    .t-time { font-size: 1.4rem; font-weight: 800; color: var(--ach); }
+    .t-fine { font-size: 1rem;   font-weight: 700; color: var(--dim); }
+
+    .cc-copy-row { display: flex; align-items: center; gap: .8rem; }
+    #cc-copy { padding: .32rem .85rem; background: var(--acc); color: #fff; border: none; border-radius: 6px; font-size: .75rem; font-weight: 600; cursor: pointer; }
+    #cc-copy:hover { opacity: .85; }
+    #cc-toast { font-size: .72rem; color: var(--t1); opacity: 0; transition: opacity .2s; }
+    #cc-toast.show { opacity: 1; }
+
+    /* details */
+    .cc-details { margin-top: 1rem; background: var(--bg); border: 1px solid var(--brd); border-radius: 7px; overflow: hidden; }
+    .cc-details summary { padding: .6rem .9rem; cursor: pointer; font-size: .78rem; font-weight: 600; list-style: none; }
+    .cc-details summary:hover { background: rgba(255,255,255,.03); }
+    .cc-details-body { padding: .5rem .9rem .9rem; font-size: .78rem; line-height: 1.6; color: var(--dim); }
+    .cc-details-body p { margin: 0 0 .4rem; }
+    #cc-defs { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: .5rem; padding: .5rem .9rem .9rem; }
+    .def-card { background: rgba(255,255,255,.03); border: 1px solid var(--brd); border-radius: 6px; padding: .5rem .7rem; }
+    .def-code { font-size: .62rem; font-weight: 800; letter-spacing: .05em; margin-bottom: .15rem; }
+    .def-name { font-size: .76rem; font-weight: 700; margin-bottom: .2rem; }
+    .def-desc { font-size: .68rem; color: var(--dim); line-height: 1.4; margin: 0; }
 </style>
 
 <script>
-    type Tier = 1 | 2 | 3 | 4 | 5;
+    // ── TYPES ──────────────────────────────────────────────────────────────
+    type Tier = 1|2|3|4|5;
+    interface CrimeDef { code:string; name:string; def:string; }
+    interface Crime extends CrimeDef { tier:Tier; catId:string; }
+    interface Mod { id:string; name:string; delta:number|null; pct:number|null; icon:string; desc:string; punish:boolean; }
+    type TierMap = Partial<Record<Tier,CrimeDef>>;
+    type Cat = [string,string,TierMap];
 
-    interface CrimeDef {
-        code: string;
-        name: string;
-        def: string;
-    }
+    // ── DATA ───────────────────────────────────────────────────────────────
+    const MID:  Record<Tier,number> = {1:3,  2:10, 3:17, 4:22, 5:30};
+    const FINE: Record<Tier,number> = {1:1000,2:2500,3:7500,4:15000,5:25000};
 
-    interface Crime extends CrimeDef {
-        tier: Tier;
-        catId: string;
-    }
-
-    interface Modifier {
-        id: string;
-        name: string;
-        delta: number | null;
-        pct: number | null;
-        icon: string;
-        desc: string;
-        negative: boolean;
-    }
-
-    interface CalcResult {
-        crimes: Crime[];
-        sorted: Crime[];
-        baseTime: number;
-        baseFine: number;
-        stackedTime: number;
-        stackedFine: number;
-        flatDelta: number;
-        finalTime: number;
-        finalFine: number;
-    }
-
-    type TierMap = Partial<Record<Tier, CrimeDef>>;
-    type Category = [string, string, TierMap];
-
-    const TIER_MINUTES: Record<Tier, [number, number]> = {
-        1: [2, 5], 2: [5, 15], 3: [15, 20], 4: [20, 25], 5: [25, 35],
-    };
-    const TIER_FINE: Record<Tier, number> = {
-        1: 1000, 2: 2500, 3: 7500, 4: 15000, 5: 25000,
-    };
-    const TIER_MID: Record<Tier, number> = {
-        1: 3, 2: 10, 3: 17, 4: 22, 5: 30,
-    };
-
-    const CATEGORIES: Category[] = [
-        ['00', 'Угроза движению', {
-            1: { code: '1-00', name: 'Угроза движению',    def: 'Таранить или толкать другие корабли с безрассудным или злым умыслом, работать без функционирующего сигнала IFF, либо сбрасывать конструкции в космос.' },
-            2: { code: '2-00', name: 'Вандализм',           def: 'Намеренно уничтожать или повреждать имущество поверхностным образом.' },
-            3: { code: '3-00', name: 'Диверсия',             def: 'Совершать злонамеренные действия, препятствующие целостности или функционированию станции/корабля и/или функциям экипажа.' },
-            5: { code: '5-00', name: 'Большая диверсия',    def: 'Совершать злостно разрушительные действия, серьёзно угрожающие кораблям или станциям.' },
+    const CATS: Cat[] = [
+        ['00','Угроза движению',{
+            1:{code:'1-00',name:'Угроза движению',    def:'Таранить другие корабли, работать без IFF, сбрасывать конструкции в космос.'},
+            2:{code:'2-00',name:'Вандализм',           def:'Намеренно уничтожать или повреждать имущество.'},
+            3:{code:'3-00',name:'Диверсия',             def:'Злонамеренные действия, препятствующие работе станции или корабля.'},
+            5:{code:'5-00',name:'Большая диверсия',    def:'Разрушительные действия, серьёзно угрожающие кораблям или станциям.'},
         }],
-        ['01', 'Угроза жизни', {
-            1: { code: '1-01', name: 'Халатность',          def: 'Безрассудно подвергать себя или других опасности своей халатностью, действием или бездействием.' },
-            2: { code: '2-01', name: 'Мошенничество',       def: 'Подделывать, незаконно изменять или иным образом фальсифицировать переписку, документы или удостоверения личности.' },
-            3: { code: '3-01', name: 'Угроза на рабочем месте', def: 'Подвергать опасности общественную станцию из-за безрассудного поведения.' },
-            4: { code: '4-01', name: 'Особо крупное мошенничество', def: 'Подделывать, изменять или иным образом фальсифицировать официальную переписку, документы или удостоверения личности (CGP, головные роли, TSF).' },
-            5: { code: '5-01', name: 'Терроризм',            def: 'Совершить серию капитальных преступлений или предпринять действия для намеренного распространения хаоса по всему сектору.' },
+        ['01','Угроза жизни',{
+            1:{code:'1-01',name:'Халатность',              def:'Рискованное поведение, угрожающее себе или другим.'},
+            2:{code:'2-01',name:'Мошенничество',            def:'Подделка документов или удостоверений личности.'},
+            3:{code:'3-01',name:'Угроза на рабочем месте',  def:'Безрассудные действия, создающие опасность на общественной станции.'},
+            4:{code:'4-01',name:'Особо крупное мошенничество',def:'Подделка официальных документов ГМК, головных ролей.'},
+            5:{code:'5-01',name:'Терроризм',                def:'Серия капитальных преступлений или распространение хаоса по всему сектору.'},
         }],
-        ['02', 'Хранение', {
-            1: { code: '1-02', name: 'Хранение',             def: 'Незаконно хранить контрабанду 2-го класса с отказом незамедлительно передать CGP.' },
-            2: { code: '2-02', name: 'Ограниченное хранение', def: 'Незаконно хранить контрабанду 3-го класса с отказом незамедлительно передать CGP.' },
-            3: { code: '3-02', name: 'Контролируемое хранение', def: 'Незаконно хранить контрабанду 4-го класса с отказом незамедлительно передать CGP.' },
+        ['02','Хранение',{
+            1:{code:'1-02',name:'Хранение',                 def:'Незаконное хранение контрабанды 2-го класса.'},
+            2:{code:'2-02',name:'Ограниченное хранение',    def:'Незаконное хранение контрабанды 3-го класса.'},
+            3:{code:'3-02',name:'Контролируемое хранение',  def:'Незаконное хранение контрабанды 4-го класса.'},
         }],
-        ['03', 'Насилие', {
-            1: { code: '1-03', name: 'Мелкое насилие',      def: 'Осуществить нежелательный физический контакт, не причинивший осязаемого вреда, либо ввести нежелательное вещество.' },
-            2: { code: '2-03', name: 'Нападение',            def: 'Угрожать применить физическую силу против кого-либо, имея возможность и/или намерение осуществить угрозу.' },
-            4: { code: '4-03', name: 'Непредумышленное убийство', def: 'Нанести насилие, повлёкшее непреднамеренную смерть. Не должно быть преднамеренным.' },
-            5: { code: '5-03', name: 'Убийство',              def: 'Убить разумное существо с умыслом и/или преднамеренно.' },
+        ['03','Насилие',{
+            1:{code:'1-03',name:'Мелкое насилие',            def:'Нежелательный физический контакт или введение вещества без согласия.'},
+            2:{code:'2-03',name:'Нападение',                 def:'Угроза применения силы при наличии возможности и/или умысла.'},
+            4:{code:'4-03',name:'Непредумышленное убийство', def:'Насилие, повлёкшее непреднамеренную смерть.'},
+            5:{code:'5-03',name:'Убийство',                  def:'Убийство разумного существа с умыслом.'},
         }],
-        ['04', 'Кража', {
-            1: { code: '1-04', name: 'Кража',                def: 'Взять имущество без согласия, без применения силы.' },
-            2: { code: '2-04', name: 'Грабёж',                def: 'Взять имущество без согласия, с применением силы или угрозой её применения.' },
-            4: { code: '4-04', name: 'Похищение',             def: 'Незаконно увезти или удерживать человека против его воли.' },
-            5: { code: '5-04', name: 'Крупная кража',         def: 'Украсть корабль и/или предметы стоимостью свыше 150 000 Спесо.' },
+        ['04','Кража',{
+            1:{code:'1-04',name:'Кража',        def:'Взять имущество без согласия, без применения силы.'},
+            2:{code:'2-04',name:'Грабёж',       def:'Взять имущество без согласия, с применением силы или угрозой.'},
+            4:{code:'4-04',name:'Похищение',    def:'Незаконно удерживать человека против его воли.'},
+            5:{code:'5-04',name:'Крупная кража',def:'Украсть корабль или имущество стоимостью свыше 150 000 Спесо.'},
         }],
-        ['05', 'Проникновение', {
-            1: { code: '1-05', name: 'Нарушение границ',    def: 'Войти в зону и отказаться покинуть её, будучи несанкционированным и незваным.' },
-            2: { code: '2-05', name: 'Взлом и проникновение', def: 'Нарушить границы с намерением совершить преступление, либо когда имущество повреждено или системы контроля доступа обойдены.' },
-            4: { code: '4-05', name: 'Побег',                def: 'Сбежать или проникнуть в изолятор CGP и/или бежать во время принудительных работ.' },
+        ['05','Проникновение',{
+            1:{code:'1-05',name:'Нарушение границ',         def:'Войти в зону и отказаться покинуть её.'},
+            2:{code:'2-05',name:'Взлом и проникновение',    def:'Проникновение с умыслом совершить преступление или с повреждением доступа.'},
+            4:{code:'4-05',name:'Побег',                    def:'Побег из изолятора CGP или во время принудительных работ.'},
         }],
-        ['06', 'Беспорядки', {
-            1: { code: '1-06', name: 'Домогательство',      def: 'Намеренно вести разрушительное поведение — физическое или словесное.' },
-            2: { code: '2-06', name: 'Злоупотребление властью', def: 'Грубо притеснять человека, имея над ним власть.' },
-            3: { code: '3-06', name: 'Беспорядки',           def: 'Участвовать в публичных беспорядках, сопровождающихся повреждением имущества.' },
-            5: { code: '5-06', name: 'Подстрекательство',   def: 'Действовать с целью свержения или подрыва установленной цепи командования без законного и обоснованного повода.' },
+        ['06','Беспорядки',{
+            1:{code:'1-06',name:'Домогательство',           def:'Намеренное разрушительное поведение — физическое или словесное.'},
+            2:{code:'2-06',name:'Злоупотребление властью',  def:'Грубое притеснение человека при наличии власти над ним.'},
+            3:{code:'3-06',name:'Беспорядки',               def:'Участие в публичных беспорядках с повреждением имущества.'},
+            5:{code:'5-06',name:'Подстрекательство',        def:'Действия с целью свержения цепи командования без законного повода.'},
         }],
-        ['07', 'Демонстрация оружия', {
-            1: { code: '1-07', name: 'Демонстрация оружия', def: 'Открыто демонстрировать любой класс контрабанды в гражданской публичной зоне, где это недопустимо, с отказом немедленно убрать или спрятать.' },
+        ['07','Демонстрация оружия',{
+            1:{code:'1-07',name:'Демонстрация оружия',def:'Открытая демонстрация контрабанды в публичной зоне.'},
         }],
-        ['08', 'Жестокость к животным', {
-            1: { code: '1-08', name: 'Жестокое обращение с животными', def: 'Причинять излишние страдания несапиентному существу со злым умыслом.' },
-            3: { code: '3-08', name: 'Насилие над сапиентными существами', def: 'Причинять излишние страдания сапиентному существу со злым умыслом.' },
+        ['08','Жестокость к животным',{
+            1:{code:'1-08',name:'Жестокое обращение с животными',  def:'Излишние страдания несапиентному существу со злым умыслом.'},
+            3:{code:'3-08',name:'Насилие над сапиентными существами',def:'Излишние страдания сапиентному существу со злым умыслом.'},
         }],
     ];
 
-    const MODIFIERS: Modifier[] = [
-        { id: 'evade',     name: 'Уклонение от ареста',  delta: +10, pct: null, icon: '', desc: 'Побег без применения оружия.',                                                              negative: false },
-        { id: 'repeat',    name: 'Рецидив',               delta: +10, pct: null, icon: '', desc: 'Совершение того же преступления после приговора в эту же смену.',                           negative: false },
-        { id: 'resist',    name: 'Сопротивление аресту',  delta: +10, pct: null, icon: '', desc: 'Применение (не)летальной силы против офицеров при попытке ареста или обыска.',            negative: false },
-        { id: 'cooperate', name: 'Сотрудничество',         delta: -10, pct: null, icon: '', desc: 'Следовать инструкциям офицера в меру своих возможностей.',                                negative: true  },
-        { id: 'surrender', name: 'Добровольная явка',      delta: null, pct: -0.5, icon: '', desc: 'Прийти в CGPO добровольно или позволить офицеру задержать себя после успешного побега.',  negative: true  },
+    const MODS: Mod[] = [
+        {id:'evade',     name:'Уклонение от ареста', delta:+10, pct:null,  icon:'', desc:'Побег без применения оружия.',                                                      punish:true },
+        {id:'repeat',    name:'Рецидив',              delta:+10, pct:null,  icon:'', desc:'Совершение того же преступления после приговора в эту же смену.',                   punish:true },
+        {id:'resist',    name:'Сопротивление аресту', delta:+10, pct:null,  icon:'', desc:'Применение силы против офицеров при попытке ареста.',                             punish:true },
+        {id:'cooperate', name:'Сотрудничество',        delta:-10, pct:null,  icon:'', desc:'Следовать инструкциям офицера в меру своих возможностей.',                        punish:false},
+        {id:'surrender', name:'Добровольная явка',     delta:null, pct:-0.5, icon:'', desc:'Явиться к ГМК добровольно или позволить задержать себя после побега.',           punish:false},
     ];
 
-    const selected = new Set<string>();
-    const activeMods = new Set<string>();
+    // ── STATE ──────────────────────────────────────────────────────────────
+    const selCrimes = new Set<string>();   // crime codes
+    const selMods   = new Set<string>();   // mod ids
 
-    function getCrimeByCode(code: string): Crime | null {
-        for (const [catId, , tiers] of CATEGORIES) {
-            for (const [tierKey, crime] of Object.entries(tiers) as [string, CrimeDef][]) {
-                if (crime.code === code) {
-                    return { ...crime, tier: parseInt(tierKey) as Tier, catId };
-                }
-            }
-        }
+    // ── HELPERS ────────────────────────────────────────────────────────────
+    function getEl(id:string){ return document.getElementById(id); }
+    function fmt(min:number){ return min<=0?'0 мин':`${Math.round(min)} мин`; }
+    function fmtK(v:number){ return v.toLocaleString('ru-RU')+' K'; }
+    function crimeByCode(code:string): Crime|null {
+        for(const [catId,,tiers] of CATS)
+            for(const [k,c] of Object.entries(tiers) as [string,CrimeDef][])
+                if(c.code===code) return {...c, tier:parseInt(k) as Tier, catId};
         return null;
     }
 
-    function fmtTime(min: number): string {
-        if (min <= 0) return '0 мин';
-        return `${Math.round(min)} мин`;
-    }
-
-    function fmtFine(v: number): string {
-        return v.toLocaleString('ru-RU') + ' K';
-    }
-
-    function renderTable(): void {
-        const tbody = document.getElementById('cc-tbody');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-
-        for (const [catId, catName, tiers] of CATEGORIES) {
+    // ── BUILD TABLE ────────────────────────────────────────────────────────
+    function buildTable(){
+        const tbody = getEl('cc-tbody')!;
+        tbody.innerHTML='';
+        for(const [catId,catName,tiers] of CATS){
             const tr = document.createElement('tr');
-
-            const tdCat = document.createElement('td');
-            tdCat.className = 'cc-td-cat';
-            tdCat.innerHTML = `<span class="cc-cat-name">${catName}</span><br><span class="cc-cat-code">${catId}-XX</span>`;
-            tr.appendChild(tdCat);
-
-            for (let t = 1; t <= 5; t++) {
-                const tier = t as Tier;
-                const td = document.createElement('td');
-                const crime = tiers[tier];
-                if (crime) {
-                    td.className = 'cc-cell cc-crime-cell';
-                    td.dataset.code = crime.code;
-                    td.dataset.tier = String(tier);
-                    td.innerHTML = `<span class="cb-code t${tier}">${crime.code}</span><br><span class="cb-name">${crime.name}</span>`;
-                    if (selected.has(crime.code)) td.classList.add('selected');
-                    td.addEventListener('click', () => toggleCrime(crime.code));
+            // category cell
+            const tc = document.createElement('td');
+            tc.className='cc-td-cat';
+            tc.innerHTML=`${catName}<br><small>${catId}-XX</small>`;
+            tr.appendChild(tc);
+            // tier cells
+            for(let t=1;t<=5;t++){
+                const tier=t as Tier;
+                const td=document.createElement('td');
+                const crime=tiers[tier];
+                if(crime){
+                    td.className='crime-cell';
+                    td.dataset.code=crime.code;
+                    td.dataset.color=String(tier);
+                    if(selCrimes.has(crime.code)) td.setAttribute('data-active','true');
+                    td.innerHTML=`<span class="c-code">${crime.code}</span><br><span class="c-name">${crime.name}</span>`;
+                    td.onclick=()=>toggleCrime(td, crime.code);
                 } else {
-                    td.className = 'cc-cell cc-cell-empty';
-                    td.textContent = '—';
+                    td.innerHTML='<span class="c-empty">—</span>';
                 }
                 tr.appendChild(td);
             }
@@ -441,218 +360,208 @@
         }
     }
 
-    function renderModifiers(): void {
-        const wrap = document.getElementById('cc-modifiers');
-        if (!wrap) return;
-        wrap.innerHTML = '';
-
-        for (const mod of MODIFIERS) {
-            const btn = document.createElement('button');
-            btn.className = 'cc-mod-btn' + (mod.negative ? ' negative' : '');
-            btn.dataset.id = mod.id;
-            if (activeMods.has(mod.id)) btn.classList.add('active');
-
-            const isNeg = mod.delta !== null ? mod.delta < 0 : (mod.pct !== null && mod.pct < 0);
-            const deltaStr = mod.pct !== null
-                ? (mod.pct < 0 ? `${mod.pct * 100}%` : `+${mod.pct * 100}%`)
-                : (mod.delta !== null ? (mod.delta >= 0 ? `+${mod.delta} мин` : `${mod.delta} мин`) : '');
-            const deltaClass = isNeg ? 'neg' : 'pos';
-
-            btn.innerHTML = `
-        <span class="cc-mod-icon">${mod.icon}</span>
-        <div class="cc-mod-info">
-          <div class="cc-mod-name">${mod.name}</div>
-          <span class="cc-mod-delta ${deltaClass}">${deltaStr}</span>
-          <div class="cc-mod-desc">${mod.desc}</div>
-        </div>
-      `;
-            btn.addEventListener('click', () => toggleMod(mod.id));
+    // ── BUILD MODIFIERS ────────────────────────────────────────────────────
+    function buildMods(){
+        const wrap = getEl('cc-mods')!;
+        wrap.innerHTML='';
+        for(const m of MODS){
+            const btn=document.createElement('button');
+            btn.className='mod-pill '+(m.punish?'punish':'beneficial');
+            btn.dataset.modId=m.id;
+            if(selMods.has(m.id)) btn.setAttribute('data-active','true');
+            const isNeg = m.delta!==null ? m.delta<0 : (m.pct!==null && m.pct<0);
+            const dStr = m.pct!==null
+                ? (m.pct<0?`${m.pct*100}%`:`+${m.pct*100}%`)
+                : (m.delta!==null?(m.delta>=0?`+${m.delta} мин`:`${m.delta} мин`):'');
+            btn.innerHTML=`
+        <span class="mod-icon">${m.icon}</span>
+        <div class="mod-body">
+          <div class="mod-head">
+            <span class="mod-name">${m.name}</span>
+            <span class="mod-badge ${isNeg?'neg':'pos'}">${dStr}</span>
+          </div>
+          <div class="mod-desc">${m.desc}</div>
+        </div>`;
+            btn.onclick=()=>toggleMod(btn, m.id);
             wrap.appendChild(btn);
         }
     }
 
-    function toggleCrime(code: string): void {
-        if (selected.has(code)) selected.delete(code);
-        else selected.add(code);
-        renderTable();
-        updateSentencer();
+    // ── TOGGLE ─────────────────────────────────────────────────────────────
+    function toggleCrime(td:HTMLElement, code:string){
+        if(selCrimes.has(code)){
+            selCrimes.delete(code);
+            td.removeAttribute('data-active');
+        } else {
+            selCrimes.add(code);
+            td.setAttribute('data-active','true');
+        }
+        updateSentence();
     }
 
-    function toggleMod(id: string): void {
-        if (activeMods.has(id)) activeMods.delete(id);
-        else activeMods.add(id);
-        renderModifiers();
-        updateSentencer();
+    function toggleMod(btn:HTMLElement, id:string){
+        if(selMods.has(id)){
+            selMods.delete(id);
+            btn.removeAttribute('data-active');
+        } else {
+            selMods.add(id);
+            btn.setAttribute('data-active','true');
+        }
+        updateSentence();
     }
 
-    function calculate(): CalcResult | null {
-        const crimes = [...selected].map(getCrimeByCode).filter((c): c is Crime => c !== null);
-        if (!crimes.length) return null;
+    // ── CALCULATE ──────────────────────────────────────────────────────────
+    function calc(){
+        const crimes=[...selCrimes].map(crimeByCode).filter((c):c is Crime=>c!==null);
+        if(!crimes.length) return null;
 
-        const byCat: Record<string, Crime> = {};
-        for (const c of crimes) {
-            const existing = byCat[c.catId];
-            if (!existing || existing.tier < c.tier) byCat[c.catId] = c;
-        }
+        // highest per category
+        const byCat:Record<string,Crime>={};
+        for(const c of crimes){ const ex=byCat[c.catId]; if(!ex||ex.tier<c.tier) byCat[c.catId]=c; }
+        const sorted=Object.values(byCat).sort((a,b)=>b.tier-a.tier);
 
-        const sorted = Object.values(byCat).sort((a, b) => b.tier - a.tier);
+        let stackTime=0, stackFine=0, mult=1;
+        for(const c of sorted){ stackTime+=MID[c.tier]*mult; stackFine+=FINE[c.tier]*mult; mult*=0.5; }
 
-        const baseTime = crimes.reduce((s, c) => s + TIER_MID[c.tier], 0);
-        const baseFine = crimes.reduce((s, c) => s + TIER_FINE[c.tier], 0);
+        let flatDelta=0;
+        for(const id of selMods){ const m=MODS.find(x=>x.id===id); if(m&&m.delta!==null) flatDelta+=m.delta; }
+        let pctMult=1;
+        for(const id of selMods){ const m=MODS.find(x=>x.id===id); if(m&&m.pct!==null) pctMult+=m.pct; }
 
-        let stackedTime = 0, stackedFine = 0, mult = 1;
-        for (const c of sorted) {
-            stackedTime += TIER_MID[c.tier] * mult;
-            stackedFine += TIER_FINE[c.tier] * mult;
-            mult *= 0.5;
-        }
-
-        let flatDelta = 0;
-        for (const id of activeMods) {
-            const mod = MODIFIERS.find(m => m.id === id);
-            if (mod && mod.delta !== null) flatDelta += mod.delta;
-        }
-
-        let pctMult = 1;
-        for (const id of activeMods) {
-            const mod = MODIFIERS.find(m => m.id === id);
-            if (mod && mod.pct !== null) pctMult += mod.pct;
-        }
-
-        const finalTime = Math.max(0, (stackedTime + flatDelta) * pctMult);
-        const finalFine = Math.max(0, stackedFine * pctMult);
-
-        return { crimes, sorted, baseTime, baseFine, stackedTime, stackedFine, flatDelta, finalTime, finalFine };
-    }
-
-    function updateSentencer(): void {
-        const empty = document.getElementById('cc-sent-empty');
-        const content = document.getElementById('cc-sent-content');
-        if (!empty || !content) return;
-
-        if (!selected.size) {
-            empty.style.display = '';
-            content.style.display = 'none';
-            return;
-        }
-
-        const r = calculate();
-        if (!r) return;
-
-        empty.style.display = 'none';
-        content.style.display = '';
-
-        const chips = document.getElementById('cc-sent-chips');
-        if (chips) {
-            chips.innerHTML = '';
-            for (const c of r.crimes) {
-                const chip = document.createElement('span');
-                chip.className = 'cc-chip';
-                chip.dataset.tier = String(c.tier);
-                chip.title = 'Нажми чтобы удалить';
-                chip.textContent = `${c.code} ${c.name}`;
-                chip.addEventListener('click', () => toggleCrime(c.code));
-                chips.appendChild(chip);
-            }
-        }
-
-        const setEl = (id: string, text: string) => {
-            const el = document.getElementById(id);
-            if (el) el.textContent = text;
+        return {
+            crimes, sorted,
+            stackTime, stackFine,
+            flatDelta, pctMult,
+            finalTime: Math.max(0,(stackTime+flatDelta)*pctMult),
+            finalFine: Math.max(0, stackFine*pctMult),
         };
-
-        setEl('val-base-time',  fmtTime(r.baseTime));
-        setEl('val-base-fine',  fmtFine(r.baseFine));
-        setEl('val-stack-time', fmtTime(r.stackedTime));
-        setEl('val-stack-fine', fmtFine(r.stackedFine));
-        setEl('val-final-time', fmtTime(r.finalTime));
-        setEl('val-final-fine', fmtFine(r.finalFine));
-
-        const rowMods = document.getElementById('row-mods');
-        if (rowMods) {
-            if (activeMods.size) {
-                rowMods.style.display = '';
-                const modDesc = [...activeMods].map(id => {
-                    const mod = MODIFIERS.find(m => m.id === id);
-                    if (!mod) return '';
-                    const ds = mod.pct !== null
-                        ? `${mod.name} (${mod.pct >= 0 ? '+' : ''}${mod.pct * 100}%)`
-                        : `${mod.name} (${(mod.delta ?? 0) >= 0 ? '+' : ''}${mod.delta ?? 0} мин)`;
-                    return ds;
-                }).filter(Boolean);
-                setEl('val-mods', modDesc.join(', '));
-            } else {
-                rowMods.style.display = 'none';
-            }
-        }
     }
 
-    function buildMarkup(): string {
-        const r = calculate();
-        if (!r) return '';
-        const lines: string[] = [
-            '[color=#e2e8f0][bold]ПРИГОВОР[/bold][/color]',
-            '',
-            '[bold]Преступления:[/bold]',
-        ];
-        for (const c of r.crimes) lines.push(`  • [bold]${c.code}[/bold] — ${c.name}`);
-        lines.push('');
-        if (activeMods.size) {
-            lines.push('[bold]Модификаторы:[/bold]');
-            for (const id of activeMods) {
-                const mod = MODIFIERS.find(m => m.id === id);
-                if (mod) {
-                    const ds = mod.pct !== null
-                        ? `${mod.pct >= 0 ? '+' : ''}${mod.pct * 100}%`
-                        : `${(mod.delta ?? 0) >= 0 ? '+' : ''}${mod.delta ?? 0} мин`;
-                    lines.push(`  • ${mod.name}: ${ds}`);
-                }
-            }
-            lines.push('');
+    // ── UPDATE SENTENCE ────────────────────────────────────────────────────
+    function updateSentence(){
+        const empty  = getEl('cc-empty')!;
+        const result = getEl('cc-result')!;
+
+        if(!selCrimes.size){ empty.style.display=''; result.style.display='none'; return; }
+        const r=calc(); if(!r) return;
+        empty.style.display='none'; result.style.display='';
+
+        // chips
+        const chips=getEl('cc-chips')!;
+        chips.innerHTML='';
+        for(const c of r.crimes){
+            const s=document.createElement('span');
+            s.className='chip'; s.dataset.t=String(c.tier);
+            s.title='Нажми чтобы удалить';
+            s.textContent=`${c.code} ${c.name}`;
+            s.onclick=()=>{
+                selCrimes.delete(c.code);
+                const td=document.querySelector<HTMLElement>(`.crime-cell[data-code="${c.code}"]`);
+                if(td) td.removeAttribute('data-active');
+                updateSentence();
+            };
+            chips.appendChild(s);
         }
-        lines.push(`[bold]Тюрьма:[/bold] ${fmtTime(r.finalTime)}`);
-        lines.push(`[bold]Штраф:[/bold] ${fmtFine(r.finalFine)}`);
+
+        // breakdown
+        const bd=getEl('cc-breakdown')!;
+        bd.innerHTML='';
+
+        // stacking section
+        if(r.sorted.length){
+            const title=document.createElement('div'); title.className='bd-title'; title.textContent='Стекинг по категориям';
+            bd.appendChild(title);
+            let m=1;
+            for(let i=0;i<r.sorted.length;i++){
+                const c=r.sorted[i];
+                const t=MID[c.tier]*m, f=FINE[c.tier]*m;
+                const mLabel=m===1?'×100%':`×${Math.round(m*100)}%`;
+                const row=document.createElement('div'); row.className='bd-row';
+                const colors=['','#4ade80','#facc15','#fb923c','#f87171','#e879f9'];
+                const bgs=['','rgba(74,222,128,.15)','rgba(250,204,21,.15)','rgba(251,146,60,.15)','rgba(248,113,113,.15)','rgba(232,121,249,.15)'];
+                row.innerHTML=`
+          <span class="bd-badge" style="color:${colors[c.tier]};background:${bgs[c.tier]}">${c.code}</span>
+          <span class="bd-name">${c.name}</span>
+          <span class="bd-mult">${mLabel}</span>
+          <span class="bd-val" style="color:${colors[c.tier]}">${fmt(t)} / ${fmtK(f)}</span>`;
+                bd.appendChild(row);
+                m*=0.5;
+            }
+            if(r.sorted.length>1){
+                const sep=document.createElement('div'); sep.className='bd-sep'; bd.appendChild(sep);
+                const sum=document.createElement('div'); sum.className='bd-sum';
+                sum.innerHTML=`<span>После стекинга:</span><strong>${fmt(r.stackTime)}</strong><span>${fmtK(r.stackFine)}</span>`;
+                bd.appendChild(sum);
+            }
+        }
+
+        // modifiers section
+        if(selMods.size){
+            const sep=document.createElement('div'); sep.className='bd-sep'; bd.appendChild(sep);
+            const title=document.createElement('div'); title.className='bd-title'; title.textContent='**Модификаторы:**';
+            bd.appendChild(title);
+            for(const id of selMods){
+                const mod=MODS.find(x=>x.id===id); if(!mod) continue;
+                const isNeg=mod.delta!==null?mod.delta<0:(mod.pct!==null&&mod.pct<0);
+                const vStr=mod.pct!==null
+                    ?(mod.pct>=0?`+${mod.pct*100}%`:`${mod.pct*100}%`)
+                    :`${(mod.delta??0)>=0?'+':''}${mod.delta??0} мин`;
+                const row=document.createElement('div'); row.className='mod-bd-row';
+                row.innerHTML=`<span class="mod-bd-name">${mod.icon} ${mod.name}</span><span class="mod-bd-val ${isNeg?'neg':'pos'}">${vStr}</span>`;
+                bd.appendChild(row);
+            }
+        }
+
+        // totals
+        getEl('out-time')!.textContent=fmt(r.finalTime);
+        getEl('out-fine')!.textContent=fmtK(r.finalFine);
+    }
+
+    // ── COPY ───────────────────────────────────────────────────────────────
+    function buildMarkup():string{
+        const r=calc(); if(!r) return '';
+        const lines:string[]=['[bold]ПРИГОВОР[/bold]','','[bold]Преступления:[/bold]'];
+        for(const c of r.crimes) lines.push(`  • [bold]${c.code}[/bold] — ${c.name}`);
+        if(selMods.size){
+            lines.push('','[bold]Модификаторы:[/bold]');
+            for(const id of selMods){
+                const m=MODS.find(x=>x.id===id); if(!m) continue;
+                const v=m.pct!==null?`${m.pct>=0?'+':''}${m.pct*100}%`:`${(m.delta??0)>=0?'+':''}${m.delta??0} мин`;
+                lines.push(`  • ${m.name}: ${v}`);
+            }
+        }
+        lines.push('',`[bold]Тюрьма:[/bold] ${fmt(r.finalTime)}`,`[bold]Штраф:[/bold] ${fmtK(r.finalFine)}`);
         return lines.join('\n');
     }
 
-    function renderDefs(): void {
-        const grid = document.getElementById('cc-defs-grid');
-        if (!grid) return;
-        grid.innerHTML = '';
-        for (const [, , tiers] of CATEGORIES) {
-            for (const [tierKey, crime] of Object.entries(tiers) as [string, CrimeDef][]) {
-                const card = document.createElement('div');
-                card.className = 'cc-def-card';
-                card.innerHTML = `
-          <div class="cc-def-code t${tierKey}">${crime.code}</div>
-          <div class="cc-def-name">${crime.name}</div>
-          <p class="cc-def-text">${crime.def}</p>
-        `;
-                grid.appendChild(card);
+    // ── DEFS ───────────────────────────────────────────────────────────────
+    function buildDefs(){
+        const grid=getEl('cc-defs')!;
+        for(const [,,tiers] of CATS)
+            for(const [k,c] of Object.entries(tiers) as [string,CrimeDef][]){
+                const d=document.createElement('div'); d.className='def-card';
+                d.innerHTML=`<div class="def-code t${k}">${c.code}</div><div class="def-name">${c.name}</div><p class="def-desc">${c.def}</p>`;
+                grid.appendChild(d);
             }
-        }
     }
 
-    renderTable();
-    renderModifiers();
-    renderDefs();
-    updateSentencer();
+    // ── INIT ───────────────────────────────────────────────────────────────
+    buildTable();
+    buildMods();
+    buildDefs();
+    updateSentence();
 
-    document.getElementById('cc-clear')?.addEventListener('click', () => {
-        selected.clear();
-        activeMods.clear();
-        renderTable();
-        renderModifiers();
-        updateSentencer();
+    getEl('cc-clear')!.addEventListener('click',()=>{
+        selCrimes.clear(); selMods.clear();
+        document.querySelectorAll<HTMLElement>('[data-active="true"]').forEach(el=>el.removeAttribute('data-active'));
+        updateSentence();
     });
 
-    document.getElementById('cc-copy')?.addEventListener('click', () => {
-        const text = buildMarkup();
-        navigator.clipboard.writeText(text).then(() => {
-            const toast = document.getElementById('cc-copy-toast');
-            if (!toast) return;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2000);
+    getEl('cc-copy')!.addEventListener('click',()=>{
+        navigator.clipboard.writeText(buildMarkup()).then(()=>{
+            const t=getEl('cc-toast')!;
+            t.classList.add('show');
+            setTimeout(()=>t.classList.remove('show'),2000);
         });
     });
 </script>
