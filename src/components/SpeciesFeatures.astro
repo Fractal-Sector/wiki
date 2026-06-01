@@ -1,0 +1,137 @@
+---
+interface Props {
+    image: string;
+    info: Record<string, string>;
+    phys: Record<string, string>;
+    pros: string[];
+    cons: string[];
+}
+const { image, info, phys, pros, cons } = Astro.props;
+---
+
+<div class="species-card">
+    <div class="top-section">
+        <div class="species-image">
+            <img src={image} alt="Species portrait" loading="lazy" />
+        </div>
+        
+        <div class="species-content">
+            <slot /> 
+        </div>
+    </div>
+
+    <div class="stats-wrapper">
+        <div class="inner-card info">
+            <h5>Основная информация</h5>
+            <ul>
+                {Object.entries(info).map(([k, v]) => <li><strong>{k}:</strong> {v}</li>)}
+            </ul>
+        </div>
+        <div class="inner-card phys">
+            <h5>Физиология</h5>
+            <ul>
+                {Object.entries(phys).map(([k, v]) => <li><strong>{k}:</strong> {v}</li>)}
+            </ul>
+        </div>
+        <div class="inner-card pros">
+            <h5>Преимущества</h5>
+            <ul>{pros.map(p => <li>{p}</li>)}</ul>
+        </div>
+    
+        <div class="inner-card cons">
+            <h5>Недостатки</h5>
+            <ul>{cons.map(c => <li>{c}</li>)}</ul>
+        </div>
+    </div>    
+</div>
+
+<style>
+    .species-card {
+        display: grid;
+        grid-template-columns: 200px 1fr ;
+        gap: 1.5rem;
+        background: var(--sl-color-gray-7);
+        padding: 1.5rem;
+        border-radius: 12px;
+        border: 2px solid var(--sl-color-gray-6);
+        transition: all 0.3s ease;
+        align-items: stretch;
+    }
+
+    .species-content {
+        grid-column: 2 / 4;
+        grid-row: 1;
+        min-width: 0;
+        overflow-wrap: break-word;
+    }
+
+    .species-image {
+        grid-column: 1;
+        grid-row: 1;
+        display: flex;
+        justify-content: center;
+        align-items: start;
+    }
+
+    .inner-card {
+        grid-row: 2;
+        box-sizing: border-box;
+        padding: 1rem;
+        border-radius: 8px;
+        background: var(--sl-color-gray-7);
+        border: 1px solid var(--sl-color-gray-4);
+        transition: background 0.3s;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .inner-card.pros {
+        grid-row: 2;
+        grid-column: 2 / 3; 
+    }
+    .inner-card.cons {
+        grid-row: 2;
+        grid-column: 3 / 4; 
+    }
+    .inner-card.info {
+        grid-row: 2;
+        grid-column: 1 / 2;
+    }
+    .inner-card.phys {
+        grid-row: 2;
+        grid-column: 1 / 2;
+    }
+
+    .species-card:hover {
+        border-color: var(--sl-color-accent);
+        background: var(--sl-color-gray-6);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .species-card:hover .inner-card {
+        background: var(--sl-color-gray-5);
+    }
+
+    .species-image img {
+        width: 100%;
+        max-width: 200px;
+        height: auto;
+        object-fit: contain;
+        border-radius: 8px;
+        image-rendering: pixelated;
+    }
+
+    ul {
+        margin: 0;
+        padding-left: 1.2rem;
+        font-size: 0.9rem;
+        flex: 1;
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+
+    h5 {
+        margin: 0 0 0.5rem 0;
+        color: var(--sl-color-white);
+    }
+</style>

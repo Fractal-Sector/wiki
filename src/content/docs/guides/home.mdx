@@ -1,11 +1,23 @@
 ---
-title: Knowledge Base
+title: База знаний
 description: A guide in my new Starlight docs site.
+tableOfContents: false
 ---
 
-Guides lead a user through a specific task they want to accomplish, often with a sequence of steps.
-Writing a good guide requires thinking about what your users are trying to do.
+import CenterTitle from '../../../components/CenterTitle.astro';
+import { LinkCard } from '@astrojs/starlight/components';
 
-## Further reading
+<CenterTitle />
 
-- Read [about how-to guides](https://diataxis.fr/how-to-guides/) in the Diátaxis framework
+Добро пожаловать в вики. Просматривайте страницы из боковой панели.
+
+<LinkCard
+    title="Правила Сервера"
+    href="../../rules/rules/"
+    description="Правила Orehum Sector"
+/>
+<LinkCard
+    title="FAQ"
+    href="../../resources/ask/"
+    description="Раздел часто задаваемых вопросов"
+/>

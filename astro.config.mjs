@@ -15,6 +15,7 @@ export default defineConfig({
     integrations: [starlight({
         title: 'Orehum Sector',
         tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 2 },
+        routeMiddleware: './src/routeData.ts',
         defaultLocale: 'ru',
         social: [
             { icon: 'github', label: 'GitHub', href: 'https://github.com/Orehum-Project/Orehum-Sector' },
@@ -29,6 +30,12 @@ export default defineConfig({
         ],
         sidebar: [
             { label: 'Правила сервера', slug: 'rules/rules' },
+            {
+                label: 'Вики',
+                items: [
+                    { label: 'Особенности рас', slug: 'guides/species' },
+                ],
+            },
             {
                 label: 'Прочее',
                 items: [
