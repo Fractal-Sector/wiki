@@ -5,8 +5,8 @@ const octokit = new Octokit();
 
 async function run() {
     const { data: pulls } = await octokit.pulls.list({
-        owner: 'Orehum-Project',
-        repo: 'Orehum-Sector',
+        owner: 'Fractal-Sector',
+        repo: 'Fractal-Sector',
         state: 'closed',
         per_page: 100
     });

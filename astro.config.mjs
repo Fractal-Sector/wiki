@@ -6,19 +6,19 @@ import markdoc from '@astrojs/markdoc';
 
 // https://astro.build/config
 export default defineConfig({
-    site: 'https://orehum-project.github.github.io',
+    site: 'https://fractal-sector.github.io',
     base: '/wiki/',
     trailingSlash: 'always',
     build: {
         format: 'directory'
     },
     integrations: [starlight({
-        title: 'Orehum Sector',
+        title: 'Fractal Sector',
         tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 2 },
         routeMiddleware: './src/routeData.ts',
         defaultLocale: 'ru',
         social: [
-            { icon: 'github', label: 'GitHub', href: 'https://github.com/Orehum-Project/Orehum-Sector' },
+            { icon: 'github', label: 'GitHub', href: 'https://github.com/Fractal-Sector/Fractal-Sector' },
             { icon: 'discord', label: 'Discord', href: 'https://discord.gg/ZC94VrbFNY' },
         ],
         logo: {
