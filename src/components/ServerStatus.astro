@@ -27,7 +27,7 @@
       if (!container || !statusText || !playersVal) return;
 
       try {
-        const targetUrl = 'https://central.spacestation14.io/hub/api/servers/';
+        const targetUrl = 'https://hub.spacestation14.com/api/servers';
         const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
 
         const response = await fetch(proxyUrl);
